@@ -54,7 +54,7 @@ def main(argv):
 		print ('VM not found!')
 		sys.exit(2)
 	# else
-	# 	print (str(vmSummary)" this is debug message")
+	# 	print (str(vmSummary)," this is debug message")
 	# Генерация тикета и вывод
 	vmid = vmSummary[0].vm
 	ticket = vc.vcenter.vm.console.Tickets.create(vmid,Spec)
