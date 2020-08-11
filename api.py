@@ -1,17 +1,19 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
+from flask import Flask
+from flask_restful import Api, Resource, reqparse
+from vmware.vapi.vsphere.client import create_vsphere_client
+import random
 import sys, getopt
 import requests
 import urllib3
-from vmware.vapi.vsphere.client import create_vsphere_client
 session = requests.session()
-
-# Ну сертов у нас нет нихуя поэтому вот
-session.verify = False
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def main(argv):
+	# Disable certification verify
+	session.verify = False
+	urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 	serverAdd = ''
 	username = ''
 	password = ''
