@@ -38,10 +38,10 @@ def main(argv):
 			VM = arg
 		elif opt in ("-d","--datacenter"):
 			datacenter = arg
-	# Кокос до вицентра
+	# vCenter connection
 	vc = create_vsphere_client(server=serverAdd, username=username, password=password, session=session)
 
-	# Заполнение полей поиска "Датацентр" и "Имя VM"
+	# Datacenter search
 	dcSummary = vc.vcenter.Datacenter.list(vc.vcenter.Datacenter.FilterSpec(names={datacenter}))
 	vmNames = {VM,}
 	if dcSummary == []:
@@ -49,15 +49,13 @@ def main(argv):
 		sys.exit(2)
 	vmDatacenters = {dcSummary[0].datacenter,} 
 
-	# Поиск виртуалки
+	# VM search
 	Spec = vc.vcenter.vm.console.Tickets.CreateSpec(vc.vcenter.vm.console.Tickets.Type('VMRC'))
 	vmSummary = vc.vcenter.VM.list(vc.vcenter.VM.FilterSpec(names=vmNames,datacenters=vmDatacenters))
 	if vmSummary == []: # Если ответ пустой - вывод ошибки
 		print ('VM not found!')
 		sys.exit(2)
-	# else
-	# 	print (str(vmSummary)," this is debug message")
-	# Генерация тикета и вывод
+	# Ticket generation and exit
 	vmid = vmSummary[0].vm
 	ticket = vc.vcenter.vm.console.Tickets.create(vmid,Spec)
 	print (ticket.ticket)
